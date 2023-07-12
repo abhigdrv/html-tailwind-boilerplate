@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Single Page Application Boilerplate</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="./assets/tailwind/tailwind.min.js"></script>
+  <script src="./assets/tailwind/custom-tailwind-config.js"></script>
+  <link rel="stylesheet" type="text/tailwindcss" href="./assets/tailwind/custom-tailwind-class.css">
+  <link rel="stylesheet" type="text/css" href="./assets/css/styles.css">
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+  <div id="home" class="page active">
+    <h1 class="text-3xl font-bold underline text-clifford">Home Page</h1>
+    <p>Welcome to the home page!</p>
+  </div>
+  <div id="about" class="page"></div>
+  <div id="contact" class="page"></div>
+  <script>
+    const navLinks = document.querySelectorAll('nav a');
+    const pages = document.querySelectorAll('.page');
+    navLinks.forEach(link => {
+      link.addEventListener('click', (event) => {
+        loadHtmlPage(event.currentTarget.attributes.href.nodeValue.slice(1)+'.html', event.currentTarget.attributes.href.nodeValue.slice(1))
+        event.preventDefault();
+        navLinks.forEach(link => link.classList.remove('active'));
+        pages.forEach(page => page.classList.remove('active'));
+        link.classList.add('active');
+        const target = link.getAttribute('href').substring(1);
+        const targetPage = document.getElementById(target);
+        targetPage.classList.add('active');
+      });
+    });
+  </script>
+   <script>
+    function loadHtmlPage(fileName, locationId){
+        fetch('./src/pages/'+fileName).then(response => response.text()).then(html => {
+            document.getElementById(locationId).innerHTML = html;
+        }).catch(error => console.log(error));
+    }
+  </script>
+</body>
+</html>
